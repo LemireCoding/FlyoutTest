@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlyoutTest.Models;
+using FlyoutTest.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,10 @@ namespace FlyoutTest.Views
         public MovieListPage()
         {
             InitializeComponent();
+            BindingContext = new MovieListViewModel();
         }
+
+        
+
     }
 }

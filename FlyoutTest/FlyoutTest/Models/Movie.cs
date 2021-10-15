@@ -13,6 +13,13 @@ namespace FlyoutTest.Models
             set { title = value; }
         }
 
+        private string genre;
+        public string Genre
+        {
+            get { return genre; }
+            set { genre = value; }
+        }
+
         private string image;
         public string Image
         {

@@ -1,12 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FlyoutTest.Views.MovieListPage">
+             x:Class="FlyoutTest.Views.MovieListPage"
+             xmlns:models="clr-namespace:FlyoutTest.Models"
+             xmlns:viewmodels="clr-namespace:FlyoutTest.ViewModels"
+             x:Name="MyMovieListPage">
+    <ContentPage.BindingContext>
+        
+        <viewmodels:MovieListViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <ListView ItemsSource="{Binding MovieGroups}"
+                      HasUnevenRows="True"
+                      SelectedItem="{Binding SelectedMovie, Mode=TwoWay}"
+                      SeparatorColor="Red" 
+                      SeparatorVisibility="None"
+                      IsGroupingEnabled="True" GroupDisplayBinding="{Binding Key}"
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
+                      RefreshControlColor="Red"
+                      RefreshCommand="{Binding RefreshCommand}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Movie" >
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Favorite" Command="{Binding Source={x:Reference MyMovieListPage}, Path=BindingContext.FavoriteCommand}" CommandParameter="{Binding .}"/>
+                             
+                                <MenuItem Text="Delete" IsDestructive="True" />
+                            </ViewCell.ContextActions>
+                            <Frame CornerRadius="20" HasShadow="true">
+
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding Image}" WidthRequest="66"/>
+                                    <StackLayout VerticalOptions="Center">
+                                        <Label Text="{Binding Title}"
+                                   TextColor="Black"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Header>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" >
+
+                        <Label Text="Best Movies" TextColor="Blue"/>
+                    </StackLayout>
+                </ListView.Header>
+
+                <ListView.Footer>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" >
+
+                        <Button Text="Load More"/>
+                    </StackLayout>
+                </ListView.Footer>
+
+            </ListView>
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
