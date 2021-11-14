@@ -11,7 +11,10 @@ namespace FlyoutTest
         public AppShell()
         {
             InitializeComponent();
-          
+
+            Routing.RegisterRoute(nameof(AddMoviePage), typeof(AddMoviePage));
+            Routing.RegisterRoute(nameof(MovieDetailsPage), typeof(MovieDetailsPage));
+
         }
     }
 }

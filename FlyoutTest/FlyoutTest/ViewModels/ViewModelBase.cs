@@ -5,7 +5,7 @@ using MvvmHelpers;
 
 namespace FlyoutTest.ViewModels
 {
-    class ViewModelBase : BaseViewModel
+    public class ViewModelBase : BaseViewModel
     {
     }
 }

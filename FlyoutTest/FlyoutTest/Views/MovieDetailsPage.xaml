@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FlyoutTest.Views.MovieDetailsPage"
+             xmlns:model="clr-namespace:FlyoutTest.Models"
+             x:DataType="model:Movie"
+             Title="{Binding Title}"
+            >
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding Title, StringFormat='Title : {0}'}"/>
+            <Label Text="{Binding Genre, StringFormat='Genre : {0}'}"/>
+            <Image Source="{Binding Image}" HorizontalOptions="Center"/>
+            <Button Text="Done" Clicked="Button_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

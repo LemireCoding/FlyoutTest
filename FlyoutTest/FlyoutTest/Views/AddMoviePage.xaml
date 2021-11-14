@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FlyoutTest.Views.AddMoviePage"
+             xmlns:viewmodel="clr-namespace:FlyoutTest.ViewModels"
+             x:DataType="viewmodel:AddMovieViewModel"
+             Title="{Binding Title}"
+             Shell.PresentationMode="Modal">
+    <ContentPage.BindingContext>
+        <viewmodel:AddMovieViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout Padding="20">
+            <Label Text="Title:"/>
+            <Entry Text="{Binding MovieTitile}"/>
+            <Label Text="Genre: "/>
+            <Entry Text="{Binding Genre}"/>
+            <Label Text="Image: "/>
+            <Entry Text="{Binding Image}"/>
+
+            <ActivityIndicator HorizontalOptions="Center" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="Center"/>
+            <Button Padding="20,0" Text="Save" Command="{Binding SaveCommand}" HorizontalOptions="Center" VerticalOptions="EndAndExpand" IsEnabled="{Binding IsNotBusy}"/>
+            
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

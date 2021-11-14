@@ -4,60 +4,101 @@
              x:Class="FlyoutTest.Views.MovieListPage"
              xmlns:models="clr-namespace:FlyoutTest.Models"
              xmlns:viewmodels="clr-namespace:FlyoutTest.ViewModels"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              x:Name="MyMovieListPage">
     <ContentPage.BindingContext>
         
         <viewmodels:MovieListViewModel/>
     </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <ListView ItemsSource="{Binding MovieGroups}"
-                      HasUnevenRows="True"
-                      SelectedItem="{Binding SelectedMovie, Mode=TwoWay}"
-                      SeparatorColor="Red" 
-                      SeparatorVisibility="None"
-                      IsGroupingEnabled="True" GroupDisplayBinding="{Binding Key}"
-                      IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
-                      RefreshControlColor="Red"
-                      RefreshCommand="{Binding RefreshCommand}">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Movie" >
-                        <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Text="Favorite" Command="{Binding Source={x:Reference MyMovieListPage}, Path=BindingContext.FavoriteCommand}" CommandParameter="{Binding .}"/>
-                             
-                                <MenuItem Text="Delete" IsDestructive="True" />
-                            </ViewCell.ContextActions>
+        <RefreshView
+            IsRefreshing="{Binding IsBusy,Mode=TwoWay}"
+            Command="{Binding RefreshCommand}"
+            RefreshColor="Red">
+            <CollectionView
+                IsGrouped="True"
+                ItemsSource="{Binding MovieList}"
+                SelectedItem="{Binding SelectedMovie, Mode=TwoWay}"
+                SelectionMode="Single"
+                SelectionChangedCommand="{Binding SelectedCommand}"
+                ItemSizingStrategy="MeasureAllItems"
+                RemainingItemsThreshold="1"
+                RemainingItemsThresholdReachedCommand="{Binding DelayLoadMoreCommand}"
+                >
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="{OnIdiom Tablet=2, Phone=1}"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.EmptyView>
+                    <StackLayout>
+                        <Label HorizontalOptions="Center" Text="No Movies"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="12">
+                            <Label Text="{Binding Key}"
+                                  />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+          
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate>
+                        <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                            <SwipeView.RightItems>
+                                <SwipeItem
+                                    BackgroundColor="Orange"
+                                    Command="{Binding Source={x:Reference MyMovieListPage},
+                                    Path=BindingContext.FavoriteCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Favorite"/>
+                                <SwipeItem BackgroundColor="Red" IsDestructive="True" Text="Delete"
+                                            Command="{Binding Source={x:Reference MyMovieListPage},
+                                    Path=BindingContext.RemoveCommand}"
+                                    CommandParameter="{Binding .}"/>
+                            </SwipeView.RightItems>
                             <Frame CornerRadius="20" HasShadow="true">
 
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="{Binding Image}" WidthRequest="66"/>
                                     <StackLayout VerticalOptions="Center">
                                         <Label Text="{Binding Title}"
-                                   TextColor="Black"/>
+                                   TextColor="Black"  VerticalOptions="Center"/>
+                                        <Label Text="{Binding Genre}"
+                                   TextColor="Black" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Id}"
+                                   TextColor="Black" VerticalOptions="Center"/>
                                     </StackLayout>
                                 </StackLayout>
                             </Frame>
-                        </ViewCell>
+                        </SwipeView>
+                            
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                <CollectionView.GroupFooterTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" >
+
+                            <Button Text="Load More" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MovieListViewModel}},Path=LoadMoreCommand}"/>
+                            <Button Text="Clear"  Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MovieListViewModel}},Path=ClearCommand}"/>
+                            </StackLayout>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.Header>
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" >
-
-                        <Label Text="Best Movies" TextColor="Blue"/>
-                    </StackLayout>
-                </ListView.Header>
-
-                <ListView.Footer>
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" >
-
-                        <Button Text="Load More"/>
-                    </StackLayout>
-                </ListView.Footer>
-
-            </ListView>
+                </CollectionView.GroupFooterTemplate>
 
 
-        </StackLayout>
+
+            </CollectionView>
+
+
+        </RefreshView>
     </ContentPage.Content>
 </ContentPage>

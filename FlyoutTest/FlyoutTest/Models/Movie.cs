@@ -1,30 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using FlyoutTest.Data_Access;
+using SQLite;
 namespace FlyoutTest.Models
 {
-    class Movie
+   public class Movie : IDatabaseItem
     {
-        private string title;
-        public string Title
-        {
-            get { return title; }
-            set { title = value; }
-        }
-
-        private string genre;
-        public string Genre
-        {
-            get { return genre; }
-            set { genre = value; }
-        }
-
-        private string image;
-        public string Image
-        {
-            get { return image; }
-            set { image = value; }
-        }
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+     
+        public string Genre { get; set; }
+        public string Title { get; set; }
+        public string Image { get; set; }
+       
     }
 }
